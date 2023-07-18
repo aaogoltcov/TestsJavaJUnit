@@ -1,12 +1,16 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+
 
 public class IntegerConverterTest {
   public IntegerConverter number;
@@ -85,5 +89,17 @@ public class IntegerConverterTest {
 
     // assert
     Assertions.assertEquals(expected, actual);
+  }
+
+  @ParameterizedTest
+  @MethodSource("testHexConverterArguments")
+  public void testHexConverterWithHamcrest(IntegerConverter original, String expected) {
+    // when
+    final String actual = original.toHex();
+
+    // assert
+    assertThat(original, instanceOf(IntegerConverter.class));
+    assertThat(actual, instanceOf(String.class));
+    assertThat(expected, is(actual));
   }
 }
